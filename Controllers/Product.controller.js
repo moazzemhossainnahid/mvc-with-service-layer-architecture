@@ -1,11 +1,11 @@
-const Product = require("../Models/Product.model");
+const { getProductsService, createProductService } = require("../Services/Product.service");
 
 exports.getProducts = async (req, res, next) => {
     try {
         // Operators
         // =============================================================================================
         // =============================================================================================
-        const products = await Product.find({});
+        const products = await getProductsService();
 
         // ==========================
         // Get by ID
@@ -94,7 +94,7 @@ exports.createProduct = async (req, res, next) => {
                 const result = await product.save(); */
 
         // create
-        const result = await Product.create(req.body);
+        const result = await createProductService(req.body);
 
         result.logger();
 
