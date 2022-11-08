@@ -5,7 +5,7 @@ exports.getProductsService = async() => {
     return Products;
 };
 
-exports.createProductService = async() => {
-    const Product = await Product.create(req.body);
-    return Product;
+exports.createProductService = async(data) => {
+    const product = await Product.create(data);
+    return product;
 };
