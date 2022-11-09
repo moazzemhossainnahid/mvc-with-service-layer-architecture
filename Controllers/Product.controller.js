@@ -172,7 +172,7 @@ exports.bulkUpdateProduct = async (req, res, next) => {
             status: "failed",
             message: "Bulk Data isn't Updated",
             error: error.message
-        })
+        });
     };
 };
 
