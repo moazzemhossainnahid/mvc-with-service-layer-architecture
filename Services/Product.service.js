@@ -15,6 +15,11 @@ exports.updateProductService = async (productId, data) => {
     return result;
 };
 
+exports.bulkUpdateProductService = async (data) => {
+    const result = await Product.updateMany({ _id: data.ids }, data, {runValidators: true});
+    return result;
+};
+
 exports.deleteProductService = async (productId) => {
     const result = await Product.deleteOne({ _id: productId });
     return result;

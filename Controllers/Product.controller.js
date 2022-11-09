@@ -1,4 +1,4 @@
-const { getProductsService, createProductService, updateProductService, deleteProductService } = require("../Services/Product.service");
+const { getProductsService, createProductService, updateProductService, deleteProductService, bulkUpdateProductService } = require("../Services/Product.service");
 
 exports.getProducts = async (req, res, next) => {
     try {
@@ -150,6 +150,27 @@ exports.updateProduct = async (req, res, next) => {
         res.status(400).json({
             status: "failed",
             message: "Data isn't Updated",
+            error: error.message
+        })
+    };
+};
+
+
+// bulk update
+exports.bulkUpdateProduct = async (req, res, next) => {
+    try {
+        const result = await bulkUpdateProductService(req.body)
+
+        res.status(200).json({
+            status: "success",
+            message: "Bulk Data Updated Successfull.",
+            data: result
+        });
+
+    } catch (error) {
+        res.status(400).json({
+            status: "failed",
+            message: "Bulk Data isn't Updated",
             error: error.message
         })
     };
