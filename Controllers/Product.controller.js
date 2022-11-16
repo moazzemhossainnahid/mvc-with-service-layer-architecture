@@ -5,7 +5,8 @@ exports.getProducts = async (req, res, next) => {
         // Operators
         // =============================================================================================
         // =============================================================================================
-        const products = await getProductsService();
+        const query = req.query;
+        const products = await getProductsService(query);
 
         // ==========================
         // Get by ID
