@@ -27,6 +27,8 @@ exports.getProducts = async (req, res, next) => {
         if(req.query.fields){
             const fields = req.query.fields.split(',').join(' ');
             queries.fields = fields
+            // for not showing id
+            // fields=name,des,-_id
         }
 
         const products = await getProductsService(queryObject, queries);
