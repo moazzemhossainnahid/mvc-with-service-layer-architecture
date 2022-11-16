@@ -5,8 +5,14 @@ exports.getProducts = async (req, res, next) => {
         // Operators
         // =============================================================================================
         // =============================================================================================
-        const query = req.query;
-        const products = await getProductsService(query);
+        const queryObject = {...req.query};
+
+        // sort - page - limit => exclude
+        const excludeFields = ['sort', 'page', 'limit'];
+
+        excludeFields?.forEach(field => delete queryObject[field])
+
+        const products = await getProductsService(queryObject);
 
         // ==========================
         // Get by ID
