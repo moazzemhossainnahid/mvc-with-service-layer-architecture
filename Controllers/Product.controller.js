@@ -10,9 +10,19 @@ exports.getProducts = async (req, res, next) => {
         // sort - page - limit => exclude
         const excludeFields = ['sort', 'page', 'limit'];
 
-        excludeFields?.forEach(field => delete queryObject[field])
+        excludeFields?.forEach(field => delete queryObject[field]);
 
-        const products = await getProductsService(queryObject);
+        const queries = {};
+
+        if(req.query.sort){
+            // price, quantity => 'price quantity'
+
+            const sortBy = req.query.sort.split(',').join(' ');
+            queries.sortBy = sortBy
+            console.log(sortBy);
+        }
+
+        const products = await getProductsService(queryObject, queries);
 
         // ==========================
         // Get by ID
