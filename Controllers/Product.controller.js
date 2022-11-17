@@ -5,7 +5,7 @@ exports.getProducts = async (req, res, next) => {
         // Operators
         // =============================================================================================
         // =============================================================================================
-        let queryObject = {...req.query};
+        let queryObject = { ...req.query };
 
         // sort - page - limit => exclude
         const excludeFields = ['sort', 'page', 'limit'];
@@ -14,7 +14,7 @@ exports.getProducts = async (req, res, next) => {
 
         const queries = {};
 
-        if(req.query.sort){
+        if (req.query.sort) {
             // price, quantity => 'price quantity'
 
             const sortBy = req.query.sort.split(',').join(' ');
@@ -24,7 +24,7 @@ exports.getProducts = async (req, res, next) => {
 
 
 
-        if(req.query.fields){
+        if (req.query.fields) {
             const fields = req.query.fields.split(',').join(' ');
             queries.fields = fields
             // for not showing id
@@ -35,9 +35,24 @@ exports.getProducts = async (req, res, next) => {
 
         // gt, lt, gte, lte, ne
         let filterString = JSON.stringify(queryObject);
-        filterString = filterString.replace(/\b(gt|gte|lt|lte)\b/g , match => `$${match}` );
+        filterString = filterString.replace(/\b(gt|gte|lt|lte)\b/g, match => `$${match}`);
 
         queryObject = JSON.parse(filterString);
+
+
+
+        // Pagination
+
+        if (req.query.page){
+
+            const {page = 1, limit= 10} = req.query;   //'3' '10'
+
+            const skip = (page - 1) * parseInt(limit);
+
+            queries.skip = skip
+            queries.limit = parseInt(limit)
+        };
+
 
         const products = await getProductsService(queryObject, queries);
 
@@ -238,18 +253,18 @@ exports.deleteProduct = async (req, res, next) => {
 // bulk delete
 exports.bulkDeleteProduct = async (req, res, next) => {
     try {
-      console.log(req.body)
-      const result = await bulkDeleteProductService(req.body.ids);
-  
-      res.status(200).json({
-        stauts: "success",
-        message: "Successfully deleted the given products",
-      });
+        console.log(req.body)
+        const result = await bulkDeleteProductService(req.body.ids);
+
+        res.status(200).json({
+            stauts: "success",
+            message: "Successfully deleted the given products",
+        });
     } catch (error) {
-      res.status(400).json({
-        status: "fail",
-        message: "Couldn't delete the given products",
-        error: error.message,
-      });
+        res.status(400).json({
+            status: "fail",
+            message: "Couldn't delete the given products",
+            error: error.message,
+        });
     }
-  };
+};
