@@ -31,6 +31,12 @@ exports.getProducts = async (req, res, next) => {
             // fields=name,des,-_id
         }
 
+        // {price:{$gt:50}}
+
+        // gt, lt, gte, lte, ne
+        const filterString = JSON.stringify(queryObject);
+        filterString.replace()
+
         const products = await getProductsService(queryObject, queries);
 
         // ==========================
