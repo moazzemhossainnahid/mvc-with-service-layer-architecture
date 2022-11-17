@@ -5,7 +5,7 @@ exports.getProducts = async (req, res, next) => {
         // Operators
         // =============================================================================================
         // =============================================================================================
-        const queryObject = {...req.query};
+        let queryObject = {...req.query};
 
         // sort - page - limit => exclude
         const excludeFields = ['sort', 'page', 'limit'];
@@ -34,8 +34,10 @@ exports.getProducts = async (req, res, next) => {
         // {price:{$gt:50}}
 
         // gt, lt, gte, lte, ne
-        const filterString = JSON.stringify(queryObject);
-        filterString.replace()
+        let filterString = JSON.stringify(queryObject);
+        filterString = filterString.replace(/\b(gt|gte|lt|lte)\b/g , match => `$${match}` );
+
+        queryObject = JSON.parse(filterString);
 
         const products = await getProductsService(queryObject, queries);
 
